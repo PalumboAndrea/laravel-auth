@@ -1,25 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
+<div class="container mt-4 admin-index">
     <table class="table table-hover">
         <thead>
             <tr>
             <th scope="col">#id</th>
             <th scope="col">Title</th>
-            <th scope="col">author</th>
-            <th scope="col">content</th>
-            <th scope="col">post_date</th>
+            <th scope="col">Author</th>
+            <th scope="col">Content</th>
+            <th scope="col">Date</th>
+            <th scope="col" class="col-3">
+                <a class="btn btn-primary ms-auto" href="">Create new product</a>
+            </th>
             </tr>
         </thead>
         <tbody>
             @foreach ($posts as $post)
             <tr>
-                <th scope="row">{{ $post->id }}</th>
-                <td>{{ $post->title }}</td>
-                <td>{{ $post->author }}</td>
-                <td>{{ $post->content }}</td>
-                <td>{{ $post->post_date }}</td>
+                <th scope="row" class="align-middle">{{ $post->id }}</th>
+                <td class="align-middle">{{ $post->title }}</td>
+                <td class="align-middle">{{ $post->author }}</td>
+                <td class="align-middle">{{ $post->content }}</td>
+                <td class="align-middle">{{ $post->post_date }}</td>
+                <td class="align-middle">
+                    <a class="btn btn-primary m-1" href=" {{ route('admin.posts.show', $post->id) }} ">Show</a>
+                    <a class="btn btn-warning m-1" href="">Edit</a>
+                    <form action="" method="POST" class="form-deleter" data-element-name="">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger m-1">
+                            Delete
+                        </button>
+                    </form>
+                </td>
             </tr>
             @endforeach
             

@@ -46,9 +46,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post) // in alternativa: dependency injection -> DA UN ID COME INPUT DAMMI IL COMIC E FAI IN AUTOMATICO LA FIND OR FAIL
     {
-        //
+        return view('admin.posts.show', compact('post')); // ritorna la view show e l'elemento preso dal DB
     }
 
     /**
