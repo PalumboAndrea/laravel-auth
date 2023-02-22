@@ -26,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create', [ 'post' => new Post() ]);
     }
 
     /**
@@ -37,7 +37,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // to validate the datas
+        $post = $request->validate([
+            'title'=>'required',
+            'author'=>'required',
+            'content'=>'required',
+            'post_date'=>'required',
+        ],
+        [
+            'title.required' => 'Per favore inserire un titolo',
+            'author.required' => 'Per favore inserire un autore',
+            'content.required' => 'Per favore inserire un testo',
+            'post_date.required' => 'Per favore inserire una data',
+        ]);
+
+
+        $newPost = new Post();
+        $newPost->fill($post);
+        $newPost->save();
+
+        return redirect()->route('admin.posts.show', $newPost->id);
     }
 
     /**
