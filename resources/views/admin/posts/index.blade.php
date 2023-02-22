@@ -26,7 +26,7 @@
                 <td class="align-middle">
                     <a class="btn btn-primary m-1" href=" {{ route('admin.posts.show', $post->id) }} ">Show</a>
                     <a class="btn btn-warning m-1" href=" {{ route('admin.posts.edit', $post->id) }} ">Edit</a>
-                    <form action="" method="POST" class="form-deleter" data-element-name="">
+                    <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" class="form-deleter" data-element-name="{{ $post->title }}">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger m-1">
@@ -40,4 +40,8 @@
         </tbody>
     </table>
 </div>
+@endsection
+
+@section('scripts')
+    @vite('resources/js/deleteForm.js')
 @endsection
