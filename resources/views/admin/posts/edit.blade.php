@@ -6,7 +6,7 @@
         <div class="row d-flex align-items-center justify-content-between">
             <div class="col-10">
                 <h1 class="m-0">
-                    Crea un nuovo elemento!
+                    Modifica l'elemento
                 </h1>
             </div>
             @include('admin.partials.backHome')
@@ -22,6 +22,6 @@
         @endif
     </div>
 
-    @include('admin.partials.form', ['route' => 'admin.posts.store', 'method' => 'POST', 'post' => $post])
+    @include('admin.partials.form', ['route' => 'admin.posts.update', 'method' => 'PUT', 'post' => $post])
 
 @endsection

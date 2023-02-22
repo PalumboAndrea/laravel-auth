@@ -11,7 +11,7 @@
             <th scope="col">Content</th>
             <th scope="col">Date</th>
             <th scope="col" class="col-3">
-                <a class="btn btn-primary ms-auto" href="">Create new product</a>
+                <a class="btn btn-primary ms-auto" href="{{ route('admin.posts.create') }}">Create new product</a>
             </th>
             </tr>
         </thead>
@@ -25,7 +25,7 @@
                 <td class="align-middle">{{ $post->post_date }}</td>
                 <td class="align-middle">
                     <a class="btn btn-primary m-1" href=" {{ route('admin.posts.show', $post->id) }} ">Show</a>
-                    <a class="btn btn-warning m-1" href="">Edit</a>
+                    <a class="btn btn-warning m-1" href=" {{ route('admin.posts.edit', $post->id) }} ">Edit</a>
                     <form action="" method="POST" class="form-deleter" data-element-name="">
                         @csrf
                         @method('DELETE')

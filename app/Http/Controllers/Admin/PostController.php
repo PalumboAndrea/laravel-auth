@@ -5,9 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
+    protected $validationRules = [
+        'title' => ['required', 'unique:posts' ],
+        'post_date' => 'required',
+        'content' => 'required'
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -38,25 +46,14 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // to validate the datas
-        $post = $request->validate([
-            'title'=>'required',
-            'author'=>'required',
-            'content'=>'required',
-            'post_date'=>'required',
-        ],
-        [
-            'title.required' => 'Per favore inserire un titolo',
-            'author.required' => 'Per favore inserire un autore',
-            'content.required' => 'Per favore inserire un testo',
-            'post_date.required' => 'Per favore inserire una data',
-        ]);
-
-
+        $data = $request->validate($this->validationRules);
+        $data['author'] = Auth::user()->name;
+        $data['slug'] = Str::slug($data['title']);
         $newPost = new Post();
-        $newPost->fill($post);
+        $newPost->fill($data);
         $newPost->save();
 
-        return redirect()->route('admin.posts.show', $newPost->id);
+        return redirect()->route('admin.posts.index')->with('msg', "Post $newPost->title has been created succesfully");
     }
 
     /**
@@ -76,9 +73,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', [ 'post' => $post ]);
     }
 
     /**
@@ -88,9 +85,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'title' => ['required', Rule::unique('posts')->ignore($post->id) ],
+            'post_date' => 'required',
+            'content' => 'required'
+        ]);
+        $post->update($data);
+        return redirect()->route('admin.posts.show', compact('post'));
     }
 
     /**
