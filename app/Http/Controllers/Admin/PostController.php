@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -23,7 +24,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(10);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -37,7 +38,7 @@ class PostController extends Controller
         return view('admin.posts.create', [ 'post' => new Post() ]);
     }
 
-    /**
+    /** 
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -88,9 +89,14 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->validate([
-            'title' => ['required', Rule::unique('posts')->ignore($post->id) ],
+            'title' => ['required', Rule::unique('posts')->ignore($post->id)],
             'post_date' => 'required',
             'content' => 'required'
+        ],
+        [
+            'title' => 'Inserire un titolo',
+            'post_date' => 'Inserire una data',
+            'content' => 'Inserire un testo'
         ]);
         $post->update($data);
         return redirect()->route('admin.posts.show', compact('post'));
