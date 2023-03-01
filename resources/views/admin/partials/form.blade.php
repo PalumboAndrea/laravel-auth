@@ -1,5 +1,5 @@
 <div class="container">
-    <form action=" {{ route($route, $post->id) }} " method="POST">
+    <form action=" {{ route($route, $post->id) }} " method="POST" enctype="multipart/form-data">
         @csrf
         @method($method)
         <h5 class="mb-3">
@@ -17,6 +17,10 @@
         <div class="mb-3">
             <label class="form-label">Data</label>
             <input type="date" class="form-control" placeholder="add date" name="post_date" value="{{ old('post_date') ?? $post->post_date }}">
+        </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Carica una foto</label>
+            <input class="form-control" type="file" id="formFile" name="image_path" value="{{ old('image_path') ?? $post->image_path }}">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

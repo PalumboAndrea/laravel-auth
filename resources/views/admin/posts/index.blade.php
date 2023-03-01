@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<img src=" {{ url('storage/imgs/'.$post->image_path) }} " alt="image">
 <div class="container mt-4 admin-index">
     <table class="table table-hover">
         <thead>

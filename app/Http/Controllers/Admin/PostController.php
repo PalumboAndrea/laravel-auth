@@ -9,13 +9,15 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     protected $validationRules = [
         'title' => ['required', 'unique:posts' ],
         'post_date' => 'required',
-        'content' => 'required'
+        'content' => 'required',
+        'image_path' => 'required|image'
     ];
     /**
      * Display a listing of the resource.
@@ -50,6 +52,7 @@ class PostController extends Controller
         $data = $request->validate($this->validationRules);
         $data['author'] = Auth::user()->name;
         $data['slug'] = Str::slug($data['title']);
+        $data['image_path'] = Storage::put('uploads', $data['image_path']); // dico al campo del DB di salvare la foto inserita dall'utente
         $newPost = new Post();
         $newPost->fill($data);
         $newPost->save();

@@ -23,6 +23,7 @@ class PostSeeder extends Seeder
             $newPost->author = $faker->name();
             $newPost->content = $faker->realTextBetween(200, 400);
             $newPost->post_date = $faker->dateTimeThisYear();
+            $newPost->image_path = 'imgs/surf.jpg';
             $newPost->save();
         }
     }
